@@ -6,8 +6,8 @@ const useStore = create(
     (set) => ({
       user: {
         name: "Manvi Sharma",
-        email: "mnvsgautam9@gmail.com",
-        phone: "9459841622",
+        email: "manvi9@gmail.com",
+        phone: "1234567890",
         role: "admin",
       },
       theme: "dark",
