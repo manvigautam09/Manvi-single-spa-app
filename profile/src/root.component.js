@@ -83,6 +83,7 @@ export default function Root(props) {
   const [formData, setFormData] = React.useState({
     name: user?.name || "",
     email: user?.email || "",
+    phone: user?.phone || "",
     role: user?.role || "",
   });
 
@@ -118,6 +119,9 @@ export default function Root(props) {
             <strong>Email:</strong> {user.email}
           </ProfileField>
           <ProfileField>
+            <strong>Phone:</strong> {user.phone}
+          </ProfileField>
+          <ProfileField>
             <strong>Role:</strong> {user.role}
           </ProfileField>
         </Card>
@@ -150,6 +154,17 @@ export default function Root(props) {
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
+            />
+          </div>
+          <div>
+            <label>Phone:</label>
+            <Input
+              theme={theme}
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Enter your phone number"
             />
           </div>
           <div>
