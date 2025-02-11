@@ -37,16 +37,33 @@ const Button = styled.button`
 
 export default function Root(props) {
   const { theme, setTheme } = useStore();
+  const [currentPath, setCurrentPath] = React.useState(
+    window.location.pathname
+  );
+
+  React.useEffect(() => {
+    const handleLocationChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    window.addEventListener("popstate", handleLocationChange);
+    return () => window.removeEventListener("popstate", handleLocationChange);
+  }, []);
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
+  // Only render on home or root path, not on profile
+  if (currentPath === "/profile") {
+    return null;
+  }
+
   return (
     <Container>
-      <Title>Welcome to Dashboard Home</Title>
+      <Title>Welcome to Dashboard Homes</Title>
       <Card theme={theme}>
-        <p>This is the home page of your micro frontend application.</p>
+        <p>Customize your dashboard appearance</p>
         <p>Current theme: {theme}</p>
         <Button onClick={toggleTheme}>Toggle Theme</Button>
       </Card>
