@@ -19,6 +19,7 @@ const Card = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   margin-bottom: 1rem;
+  position: relative;
 `;
 
 const Button = styled.button`
@@ -46,9 +47,39 @@ const Input = styled.input`
   color: ${(props) => (props.theme === "dark" ? "white" : "#2c3e50")};
 `;
 
+const EditButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: #3498db;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(52, 152, 219, 0.1);
+  }
+`;
+
+const ProfileField = styled.div`
+  margin: 1rem 0;
+
+  strong {
+    display: inline-block;
+    width: 100px;
+    margin-right: 1rem;
+  }
+`;
+
 export default function Root(props) {
   const { theme, user, setUser } = useStore();
-
+  const [isEditing, setIsEditing] = React.useState(false);
   const [formData, setFormData] = React.useState({
     name: user?.name || "",
     email: user?.email || "",
@@ -58,6 +89,7 @@ export default function Root(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setUser(formData);
+    setIsEditing(false);
   };
 
   const handleChange = (e) => {
@@ -67,9 +99,35 @@ export default function Root(props) {
     });
   };
 
+  if (!isEditing) {
+    return (
+      <Container>
+        <Title>Profile Settings</Title>
+        <Card theme={theme}>
+          <EditButton onClick={() => setIsEditing(true)}>
+            <span role="img" aria-label="edit">
+              ✎
+            </span>
+            Edit Profile
+          </EditButton>
+          <h3>Current Profile</h3>
+          <ProfileField>
+            <strong>Name:</strong> {user.name}
+          </ProfileField>
+          <ProfileField>
+            <strong>Email:</strong> {user.email}
+          </ProfileField>
+          <ProfileField>
+            <strong>Role:</strong> {user.role}
+          </ProfileField>
+        </Card>
+      </Container>
+    );
+  }
+
   return (
     <Container>
-      <Title>Profile Settings</Title>
+      <Title>Edit Profile</Title>
       <Card theme={theme}>
         <form onSubmit={handleSubmit}>
           <div>
@@ -105,24 +163,16 @@ export default function Root(props) {
               placeholder="Enter your role"
             />
           </div>
-          <Button type="submit">Save Profile</Button>
+          <Button type="submit">Save Changes</Button>
+          <Button
+            type="button"
+            onClick={() => setIsEditing(false)}
+            style={{ marginLeft: "1rem", background: "#95a5a6" }}
+          >
+            Cancel
+          </Button>
         </form>
       </Card>
-
-      {user && (
-        <Card theme={theme}>
-          <h3>Current Profile</h3>
-          <p>
-            <strong>Name:</strong> {user.name}
-          </p>
-          <p>
-            <strong>Email:</strong> {user.email}
-          </p>
-          <p>
-            <strong>Role:</strong> {user.role}
-          </p>
-        </Card>
-      )}
     </Container>
   );
 }

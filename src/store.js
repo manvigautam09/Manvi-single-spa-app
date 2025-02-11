@@ -4,7 +4,12 @@ import { persist } from "zustand/middleware";
 const useStore = create(
   persist(
     (set) => ({
-      user: null,
+      user: {
+        name: "Manvi Sharma",
+        email: "mnvsgautam9@gmail.com",
+        phone: "9459841622",
+        role: "admin",
+      },
       theme: "dark",
       setUser: (user) => set({ user }),
       setTheme: (theme) => {
